@@ -34,7 +34,7 @@ int main() {
     while (1) {
         shell_prompt();
         if (fgets(input, MAX_CMD_LEN, stdin) == NULL) {
-            printf("\nExiting PUCITshell\n");
+            printf("\nExiting PUCITshell\n"); //printing
             break;
         }
 
