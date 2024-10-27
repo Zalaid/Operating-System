@@ -27,3 +27,20 @@ void execute_command(char **args) {
     }
 }
 
+int main() {
+    char input[MAX_CMD_LEN];
+    char *args[MAX_ARGS];
+
+    while (1) {
+        shell_prompt();
+        if (fgets(input, MAX_CMD_LEN, stdin) == NULL) {
+            printf("\nExiting PUCITshell\n");
+            break;
+        }
+
+        input[strcspn(input, "\n")] = 0;  // Remove newline
+        int i = 0;
+        args[i] = strtok(input, " ");
+        while (args[i] != NULL) {
+            args[++i] = strtok(NULL, " ");
+        }
