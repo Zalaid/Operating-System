@@ -44,3 +44,12 @@ int main() {
         while (args[i] != NULL) {
             args[++i] = strtok(NULL, " ");
         }
+
+
+        if (args[0] == NULL) continue;  // Empty command
+
+        execute_command(args);
+    }
+
+    return 0;
+}
