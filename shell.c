@@ -53,3 +53,25 @@ int main() {
 
     return 0;
 }
+
+
+#include <fcntl.h>
+
+void execute_redirection(char **args) {
+    int in = -1, out = -1;
+    char *cmd[MAX_ARGS];
+    int i, j = 0;
+
+    for (i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], "<") == 0) {
+            in = open(args[++i], O_RDONLY);
+        } else if (strcmp(args[i], ">") == 0) {
+            out = open(args[++i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        } else {
+            cmd[j++] = args[i];
+        }
+    }
+    cmd[j] = NULL;
+
+   
+// Update main loop to check for redirection
