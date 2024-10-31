@@ -92,3 +92,20 @@ int main() {
     // Use execute_command_bg when detecting '&' at the end of args
 }
 
+#define HISTORY_SIZE 10
+char *history[HISTORY_SIZE];
+int history_count = 0;
+
+void add_to_history(const char *cmd) {
+    if (history_count < HISTORY_SIZE) {
+        history[history_count++] = strdup(cmd);
+    } else {
+        free(history[0]);
+        memmove(history, history + 1, sizeof(char *) * (HISTORY_SIZE - 1));
+        history[HISTORY_SIZE - 1] = strdup(cmd);
+    }
+}
+
+
+// In main loop, add input command to history
+
