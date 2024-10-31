@@ -106,6 +106,27 @@ void add_to_history(const char *cmd) {
     }
 }
 
+#define HISTORY_SIZE 10
+char *history[HISTORY_SIZE];
+int history_count = 0;
+
+void add_to_history(const char *cmd) {
+    if (history_count < HISTORY_SIZE) {
+        history[history_count++] = strdup(cmd);
+    } else {
+        free(history[0]);
+        memmove(history, history + 1, sizeof(char *) * (HISTORY_SIZE - 1));
+        history[HISTORY_SIZE - 1] = strdup(cmd);
+    }
+}
+
+void print_history() {
+    for (int i = 0; i < history_count; i++) {
+        printf("%d: %s\n", i + 1, history[i]);
+    }
+}
+
+// In main loop, add input command to history
 
 // In main loop, add input command to history
 
