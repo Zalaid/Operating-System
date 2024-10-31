@@ -75,3 +75,19 @@ void execute_redirection(char **args) {
 
    
 // Update main loop to check for redirection
+
+
+void execute_command_bg(char **args) {
+    pid_t pid = fork();
+    if (pid == 0) {  // Child process
+        execvp(args[0], args);
+        perror("Command execution failed");
+        exit(EXIT_FAILURE);
+    } else {  // Parent process
+        printf("[PID %d] %s started in background\n", pid, args[0]);
+    }
+}
+
+int main() {
+    // Use execute_command_bg when detecting '&' at the end of args
+}
