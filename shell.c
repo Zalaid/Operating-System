@@ -135,3 +135,8 @@ void execute_builtin(char **args) {
     if (strcmp(args[0], "cd") == 0) {
         chdir(args[1] ? args[1] : getenv("HOME"));
     } else if (strcmp(args[0], "exit") == 0) {
+         exit(0);
+    } else if (strcmp(args[0], "help") == 0) {
+        printf("Built-in commands: cd, exit, jobs, kill, help\n");
+    }
+}
