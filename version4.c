@@ -51,3 +51,20 @@ char* get_command_from_history(int index) {
     return strdup(history[(index - 1) % HISTORY_SIZE]);
 }
 
+// Function to read user input from the shell prompt
+char* read_input() {
+    char *buffer = NULL;
+    size_t bufsize = 0;
+    ssize_t len = getline(&buffer, &bufsize, stdin);
+
+    // Check if the user entered Ctrl+D (EOF)
+    if (len == -1) {
+        if (feof(stdin)) {  // End of input
+            printf("\n");
+            free(buffer);
+            exit(0);  // Gracefully exit the shell
+        }
+    }
+    return buffer;
+}
+
