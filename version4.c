@@ -131,3 +131,42 @@ int execute_command(char** args) {
 }
 
 
+// Main shell loop
+int main() {
+    char* input;
+    char** args;
+    int status = 1;
+
+    do {
+        display_prompt();
+        input = read_input();
+
+        // Handle !number for history
+        if (input[0] == '!') {
+            int index = atoi(input + 1);
+            free(input);
+            input = get_command_from_history(index);
+            if (input == NULL) {
+                continue;
+            }
+            printf("%s", input);  // Print the command being executed
+        } else {
+            add_to_history(input);  // Add command to history if not a history command
+        }
+
+        args = parse_input(input);
+        if (args[0] != NULL) {
+            status = execute_command(args);
+        }
+
+        free(input);
+        free(args);
+    } while (status);
+
+    // Free history on exit
+    for (int i = 0; i < history_count; i++) {
+        free(history[i]);
+    }
+
+    return 0;
+}
