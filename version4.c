@@ -68,3 +68,66 @@ char* read_input() {
     return buffer;
 }
 
+// Function to parse input and split by spaces
+char** parse_input(char* input) {
+    int bufsize = BUFFER_SIZE, position = 0;
+    char** tokens = malloc(bufsize * sizeof(char*));
+    char* token;
+
+    if (!tokens) {
+        fprintf(stderr, "Allocation error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    token = strtok(input, " \t\r\n\a");
+    while (token != NULL) {
+        tokens[position] = token;
+        position++;
+
+        if (position >= bufsize) {
+            bufsize += BUFFER_SIZE;
+            tokens = realloc(tokens, bufsize * sizeof(char*));
+            if (!tokens) {
+                fprintf(stderr, "Reallocation error\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        token = strtok(NULL, " \t\r\n\a");
+    }
+    tokens[position] = NULL;
+    return tokens;
+}
+
+// Function to execute commands
+int execute_command(char** args) {
+    // Handle the built-in "exit" command to terminate the shell
+    if (strcmp(args[0], "exit") == 0) {
+        return 0;
+    }
+
+    // Handle the built-in "history" command
+    if (strcmp(args[0], "history") == 0) {
+        display_history();
+        return 1;
+    }
+
+    pid_t pid = fork();
+
+    if (pid == 0) {  // Child process
+        if (execvp(args[0], args) == -1) {
+            perror("Error executing command");
+        }
+        exit(EXIT_FAILURE);
+
+    } else if (pid < 0) {  // Fork error
+        perror("Error forking");
+
+    } else {  // Parent process
+        waitpid(pid, NULL, 0);  // Wait for foreground process to complete
+    }
+
+    return 1;
+}
+
+
