@@ -47,3 +47,13 @@ void display_history() {
         printf("%d: %s", i + 1, history[i]);
     }
 }
+
+
+// Built-in command: cd
+void builtin_cd(char** args) {
+    if (args[1] == NULL) {
+        fprintf(stderr, "cd: expected argument\n");
+    } else if (chdir(args[1]) != 0) {
+        perror("cd");
+    }
+}
