@@ -57,3 +57,13 @@ void builtin_cd(char** args) {
         perror("cd");
     }
 }
+
+// Built-in command: jobs
+void builtin_jobs() {
+    printf("Background Jobs:\n");
+    for (int i = 0; i < bg_process_count; i++) {
+        if (bg_processes[i] != 0) {  // Only display active jobs
+            printf("[%d] PID: %d\n", i + 1, bg_processes[i]);
+        }
+    }
+}
