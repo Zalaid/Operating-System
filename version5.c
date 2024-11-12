@@ -41,3 +41,9 @@ void add_to_history(char* input) {
 }
 
 
+// Function to display command history
+void display_history() {
+    for (int i = 0; i < history_count; i++) {
+        printf("%d: %s", i + 1, history[i]);
+    }
+}
