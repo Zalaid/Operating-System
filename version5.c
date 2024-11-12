@@ -25,3 +25,19 @@ void display_prompt() {
         perror("getcwd() error");
     }
 }
+
+
+// Function to add a command to history
+void add_to_history(char* input) {
+    if (history_count < HISTORY_SIZE) {
+        history[history_count++] = strdup(input);
+    } else {
+        free(history[0]);
+        for (int i = 1; i < HISTORY_SIZE; i++) {
+            history[i - 1] = history[i];
+        }
+        history[HISTORY_SIZE - 1] = strdup(input);
+    }
+}
+
+
