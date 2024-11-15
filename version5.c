@@ -67,3 +67,31 @@ void builtin_jobs() {
         }
     }
 }
+
+// Built-in command: kill
+void builtin_kill(char** args) {
+    if (args[1] == NULL) {
+        fprintf(stderr, "kill: expected PID\n");
+    } else {
+        int pid = atoi(args[1]);
+        int found = 0;
+
+        // Search for the PID in the background process list
+        for (int i = 0; i < bg_process_count; i++) {
+            if (bg_processes[i] == pid) {
+                found = 1;
+                if (kill(pid, SIGKILL) == -1) {
+                    perror("kill");
+                } else {
+                    printf("Process %d terminated.\n", pid);
+                    bg_processes[i] = 0;  // Mark the process as removed
+                }
+                break;
+            }
+        }
+
+        if (!found) {
+            printf("kill: %d: no such process\n", pid);
+        }
+    }
+}
