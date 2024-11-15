@@ -129,3 +129,34 @@ int handle_builtin_commands(char** args) {
     }
     return 0;  // Not a built-in command
 }
+
+// Function to parse input and split by spaces
+char** parse_input(char* input) {
+    int bufsize = BUFFER_SIZE, position = 0;
+    char** tokens = malloc(bufsize * sizeof(char*));
+    char* token;
+
+    if (!tokens) {
+        fprintf(stderr, "Allocation error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    token = strtok(input, " \t\r\n\a");
+    while (token != NULL) {
+        tokens[position] = token;
+        position++;
+
+        if (position >= bufsize) {
+            bufsize += BUFFER_SIZE;
+            tokens = realloc(tokens, bufsize * sizeof(char*));
+            if (!tokens) {
+                fprintf(stderr, "Reallocation error\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        token = strtok(NULL, " \t\r\n\a");
+    }
+    tokens[position] = NULL;
+    return tokens;
+}
