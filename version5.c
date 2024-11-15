@@ -106,3 +106,26 @@ void builtin_help() {
     printf("history: Display command history\n");
     printf("help: Show this help message\n");
 }
+
+// Check if a command is built-in and execute it if so
+int handle_builtin_commands(char** args) {
+    if (strcmp(args[0], "cd") == 0) {
+        builtin_cd(args);
+        return 1;
+    } else if (strcmp(args[0], "exit") == 0) {
+        exit(0);
+    } else if (strcmp(args[0], "jobs") == 0) {
+        builtin_jobs();
+        return 1;
+    } else if (strcmp(args[0], "kill") == 0) {
+        builtin_kill(args);
+        return 1;
+    } else if (strcmp(args[0], "help") == 0) {
+        builtin_help();
+        return 1;
+    } else if (strcmp(args[0], "history") == 0) {
+        display_history();
+        return 1;
+    }
+    return 0;  // Not a built-in command
+}
