@@ -95,3 +95,14 @@ void builtin_kill(char** args) {
         }
     }
 }
+
+// Built-in command: help
+void builtin_help() {
+    printf("Built-in commands:\n");
+    printf("cd <directory>: Change the current directory\n");
+    printf("exit: Exit the shell\n");
+    printf("jobs: List background jobs\n");
+    printf("kill <PID>: Kill a background process by PID\n");
+    printf("history: Display command history\n");
+    printf("help: Show this help message\n");
+}
