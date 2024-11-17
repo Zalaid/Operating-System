@@ -160,3 +160,30 @@ char** parse_input(char* input) {
     tokens[position] = NULL;
     return tokens;
 }
+
+
+// Function to execute external commands
+int execute_external_command(char** args, int background) {
+    pid_t pid = fork();
+
+    if (pid == 0) {  // Child process
+        if (execvp(args[0], args) == -1) {
+            perror("Error executing command");
+        }
+        exit(EXIT_FAILURE);
+
+    } else if (pid < 0) {  // Fork error
+        perror("Error forking");
+
+    } else {  // Parent process
+        if (background) {
+            printf("Started background process with PID: %d\n", pid);
+            if (bg_process_count < MAX_BG_PROCESSES) {
+                bg_processes[bg_process_count++] = pid;
+            }
+        } else {
+            waitpid(pid, NULL, 0);
+        }
+    }
+
+    return 1;
