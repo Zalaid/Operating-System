@@ -187,3 +187,24 @@ int execute_external_command(char** args, int background) {
     }
 
     return 1;
+
+}
+
+// Main shell loop
+int main() {
+    char* input;
+    char** args;
+    int status = 1;
+
+    do {
+        display_prompt();
+        input = malloc(BUFFER_SIZE);
+        if (fgets(input, BUFFER_SIZE, stdin) == NULL) {
+            printf("\nExiting shell...\n");
+            break;
+        }
+
+        // Remove trailing newline from input
+        input[strcspn(input, "\n")] = '\0';
+
+ 
