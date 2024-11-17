@@ -206,5 +206,16 @@ int main() {
 
         // Remove trailing newline from input
         input[strcspn(input, "\n")] = '\0';
+        
+        // Check if command should run in background
+        int background = 0;
+        if (input[strlen(input) - 1] == '&') {
+            background = 1;
+            input[strlen(input) - 1] = '\0';  // Remove '&' from the input string
+        }
+
+        // Add command to history and parse input
+        add_to_history(input);
+        args = parse_input(input);
 
  
