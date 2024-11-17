@@ -218,4 +218,26 @@ int main() {
         add_to_history(input);
         args = parse_input(input);
 
+         if (args[0] != NULL) {
+            // Handle built-in commands
+            if (!handle_builtin_commands(args)) {
+                // Execute as external command if not built-in
+                status = execute_external_command(args, background);
+            }
+        }
+
+        free(input);
+        free(args);
+    } while (status);
+
+    // Free history on exit
+    for (int i = 0; i < history_count; i++) {
+        free(history[i]);
+    }
+
+    return 0;
+}
+
+
+
  
